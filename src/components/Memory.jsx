@@ -43,7 +43,6 @@ export const Memory = () => {
           return [...logos];
         }
       } else {
-        console.log('entra')
         if (sonTrue.length < (sonTrue.length + sonTrue.length)) {
           return logos.map(logo => logo.index === index ? { ...logo, isVisible: true } : logo);
         } else {
@@ -54,9 +53,7 @@ export const Memory = () => {
 
     //Setear Imagenes para la comparación
     if ((anterior1.index !== '') && (anterior2.index !== '')) {
-      // setDisableButton('disable');
     } else {
-      // setDisableButton('')
       if (anterior1.index === '') {
         setAnterior1({ index: index });
       } else if (anterior1.index !== '') {
@@ -66,9 +63,6 @@ export const Memory = () => {
   }
 
   function compareImagenes() {
-    /* Ahora lo que tenemos que hacer es lo siguiente: tenemos que poner en Visible si coinciden el valorAnterior1 y el valorAnterior2 
-    (si tienen el mismo nombre de imagen), 
-    si no coinciden pues que haya un setTimeout y que las dos imagenes vuelvan a estar en isVisible: false  */
     setLogos(logos => {
       if (logos[anterior1.index].img === logos[anterior2.index].img) {
         setDisableButton('');
@@ -78,14 +72,21 @@ export const Memory = () => {
         return [...logos];
       } else {
         setTimeout(() => {
-          setLogos(logos.map(logo => {
-            if (logos[anterior1.index].img !== logos[anterior2.index].img) {
-              setDisableButton('');
-              setAnterior1({ index: '' });
-              setAnterior2({ index: '' });
-              return { ...logo, isVisible: false };
+          //Entender mas esto
+          setLogos(logo => logo.map(l => {
+            if (l.index === anterior1.index || l.index === anterior2.index) {
+              if (logos[anterior1.index].img === logos[anterior2.index].img) {
+                return { img: l.img, isVisible: l.isVisible, index: l.index }
+              } else {
+                return { img: l.img, isVisible: false, index: l.index }
+              }
+            } else {
+              return l;
             }
           }));
+          setDisableButton('');
+          setAnterior1({ index: '' });
+          setAnterior2({ index: '' });
         }, 2000);
         return logos;
       }
@@ -93,7 +94,9 @@ export const Memory = () => {
   }
 
 
-  function shuffle() { }
+  function shuffle() {
+    //Hacer el shuffle
+  }
 
 
   return (
