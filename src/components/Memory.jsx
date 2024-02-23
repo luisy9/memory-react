@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import Items from "./Items";
+// import { s } from "vite/dist/node/types.d-jgA8ss1A";
 
 export const Memory = () => {
 
@@ -26,77 +27,48 @@ export const Memory = () => {
 
   useEffect(() => {
     if ((anterior1.index !== '') && (anterior2.index !== '')) {
-      compareImagenes();
+      setLogos(logos => logos.map(logo => {
+        if (logos[anterior1.index].img === logos[anterior2.index].img) {
+          return { ...logo };
+        } else if (logo.index === anterior1.index || logo.index === anterior2.index) {
+          return { img: logo.img, isVisible: false, index: logo.index }
+        } else {
+          return logo;
+        }
+      }));
+      setAnterior1({ index: '' });
+      setAnterior2({ index: '' });
     }
-  }, [anterior1, anterior2])
+  }, [anterior2.index])
 
 
   function setCardVisible(index) {
+    //Hacer que no se pueda clickar si esta en true
     //Logica para que solo se puedan marcar dos cards
-
-    setLogos(logos => {
-      const sonTrue = logos.filter(e => e.isVisible === true);
-      if (parejaEncontrada === false) {
-        if (sonTrue.length < 2) {
-          return logos.map(logo => logo.index === index ? { ...logo, isVisible: true } : logo);
-        } else {
-          return [...logos];
-        }
-      } else {
-        if (sonTrue.length < (sonTrue.length + sonTrue.length)) {
-          return logos.map(logo => logo.index === index ? { ...logo, isVisible: true } : logo);
-        } else {
-          return [...logos];
-        }
-      }
-    });
-
-    //Setear Imagenes para la comparación
-    if ((anterior1.index !== '') && (anterior2.index !== '')) {
-    } else {
+    if ((anterior1.index === '') || (anterior2.index === '')) {
       if (anterior1.index === '') {
         setAnterior1({ index: index });
-      } else if (anterior1.index !== '') {
+      } else {
         setAnterior2({ index: index });
       }
     }
-  }
 
-  function compareImagenes() {
-    setLogos(logos => {
-      if (logos[anterior1.index].img === logos[anterior2.index].img) {
-        setDisableButton('');
-        setAnterior1({ index: '' });
-        setAnterior2({ index: '' });
-        setParejaEncontrada(true);
-        return [...logos];
-      } else {
-        setTimeout(() => {
-          //Entender mas esto
-          setLogos(logo => logo.map(l => {
-            if (l.index === anterior1.index || l.index === anterior2.index) {
-              if (logos[anterior1.index].img === logos[anterior2.index].img) {
-                return { img: l.img, isVisible: l.isVisible, index: l.index }
-              } else {
-                return { img: l.img, isVisible: false, index: l.index }
-              }
-            } else {
-              return l;
+    let logos_array = logos;
+    logos_array.map(logo => {
+      if (logo.index === index) {
+        if (!logo.isVisible) {
+          setLogos(logos => logos.map(logo => {
+            if (logo.index === index) {
+              return { ...logo, isVisible: true }
             }
+            return { ...logo }
           }));
-          setDisableButton('');
-          setAnterior1({ index: '' });
-          setAnterior2({ index: '' });
-        }, 2000);
-        return logos;
+        }
       }
-    });
+    })
   }
 
 
-  function shuffle() {
-    //Hacer el shuffle
-  }
 
 
   return (
@@ -109,8 +81,7 @@ export const Memory = () => {
         </div>
       </div>
       <div className="flex justify-center">
-        <button className="border-2 border-sky-500 px-3 py-1 rounded-lg hover:bg-sky-500"
-          onClick={() => shuffle()}>Shuffle</button>
+        <button className="border-2 border-sky-500 px-3 py-1 rounded-lg hover:bg-sky-500">Shuffle</button>
       </div>
     </>
 

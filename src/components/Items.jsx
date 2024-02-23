@@ -1,5 +1,5 @@
 export const Items = ({ logos, setCardVisible, disableButton }) => {
-    // console.log(logos)
+    console.log(logos)
 
     const disabled = { pointerEvents: disableButton === 'disable' ? 'none' : 'auto' }
     return (
