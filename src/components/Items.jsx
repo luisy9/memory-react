@@ -1,5 +1,4 @@
 export const Items = ({ logos, setCardVisible, disableButton }) => {
-    console.log(logos)
 
     const disabled = { pointerEvents: disableButton === 'disable' ? 'none' : 'auto' }
     return (
@@ -8,7 +7,7 @@ export const Items = ({ logos, setCardVisible, disableButton }) => {
                 logos.map(logo => {
                     return (
                         <div className="border-2 border-white" key={logo.index} style={disabled}
-                            onClick={() => setCardVisible(logo.index, logo.isVisible)}>
+                            onClick={() => setCardVisible(logo.index, logo.img)}>
 
                             {logo.isVisible === false ? <div className="bg-[#7A8AA4] w-40 h-40 cursor-pointer"></div>
                                 :
