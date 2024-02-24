@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 import Items from "./Items";
-// import { s } from "vite/dist/node/types.d-jgA8ss1A";
 
 export const Memory = () => {
 
@@ -43,26 +42,27 @@ export const Memory = () => {
 
 
   function setCardVisible(index) {
-    //Hacer que no se pueda clickar si esta en true
-    //Logica para que solo se puedan marcar dos cards
-    if ((anterior1.index === '') || (anterior2.index === '')) {
-      if (anterior1.index === '') {
-        setAnterior1({ index: index });
-      } else {
-        setAnterior2({ index: index });
-      }
-    }
-
+    /* Logica para que solo se puedan marcar dos cards 
+    y ademas que no se puedan marcar otra vez los boxes que estan en true */
     let logos_array = logos;
     logos_array.map(logo => {
       if (logo.index === index) {
         if (!logo.isVisible) {
+          if ((anterior1.index === '') || (anterior2.index === '')) {
+            if (anterior1.index === '') {
+              setAnterior1({ index: index });
+            } else {
+              setAnterior2({ index: index });
+            }
+          }
           setLogos(logos => logos.map(logo => {
             if (logo.index === index) {
               return { ...logo, isVisible: true }
             }
-            return { ...logo }
+            return { ...logo };
           }));
+        } else {
+          return logo
         }
       }
     })
