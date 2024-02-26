@@ -22,6 +22,7 @@ export const Memory = () => {
   const [isLoadingCheck, setIsLoadingCheck] = useState(false);
   const [anterior1, setAnterior1] = useState({ index: '', img: '' });
   const [anterior2, setAnterior2] = useState({ index: '', img: '' });
+  const [youWin, setYouWin] = useState(false);
 
   useEffect(() => {
     if ((anterior1.index !== '') && (anterior2.index !== '')) {
@@ -32,10 +33,8 @@ export const Memory = () => {
           //Condicion para comprobar que las imagenes son iguales en el array
           if (logo.index === anterior1.index || logo.index === anterior2.index) {
             if (anterior1.img === anterior2.img) {
-
               return { ...logo };
             } else {
-
               return { img: logo.img, isVisible: false, index: logo.index }
             }
           } else {
@@ -51,6 +50,13 @@ export const Memory = () => {
       setAnterior2({ index: '', img: '' });
     }
   }, [anterior2.index]);
+
+  useEffect(() => {
+    const youWin = logos.every((logo) => logo.isVisible === true);
+    if (youWin) {
+      setYouWin(true);
+    }
+  }, [logos]);
 
 
   function setCardVisible(index, img) {
@@ -83,23 +89,20 @@ export const Memory = () => {
   }
 
   const shuffleCard = () => {
-    //Hacer un shuffle de las cards
     const logosShuffle = logos.sort(() => Math.random() - 0.5);
     setLogos([...logosShuffle]);
   }
 
 
-
-
   return (
     <>
-      <div className="flex justify-center items-center h-screen">
+      <div className="flex justify-center items-center">
         <div className="grid grid-cols-4">
           <Items logos={logos} setCardVisible={setCardVisible} disableButton={disableButton} />
         </div>
       </div>
       <div className="flex justify-center">
-        <button className="border-2 border-sky-500 px-3 py-1 rounded-lg hover:bg-sky-500" onClick={() => shuffleCard()}>Shuffle</button>
+        <button className="border-2 border-[#01DD82] bg-[#01DD82] hover:bg-green-500 px-3 py-1 rounded-lg my-7" onClick={() => shuffleCard()}>Shuffle</button>
       </div>
     </>
 
